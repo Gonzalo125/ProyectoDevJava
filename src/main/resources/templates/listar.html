@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head><!-- va a reemplazar el HEAD-->
+<body>
+
+<div id="i18n_eliminar_cliente" th:text="#{text.pedido.eliminarOk}" style="display: none;"></div>
+<!-- te saldra esta ventanita en donde t diga eliminado correctamente-->
+
+<header th:replace="layout/layout :: header"></header>
+<!--vamos a cambiar el header del layout con el head--><!-- pasame el header del layout-->
+<div class="container py-4">
+
+	<div class="card bg-light">
+		<div class="card-header" th:text="${titulo}"></div>
+		<div class="card-body">
+
+			<h4 sec:authorize="hasRole('ROLE_ADMIN')"  class="card-title">
+
+			</h4>
+			<h4 class="card-title"><!-- si tiene el Role admin entonces se muestra u botno para crear cliente y va a llmar al form-->
+				<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/form}" class="btn btn-primary btn-xs" th:text="#{text.pedido.crear}">crear
+					Crear pedido</a>
+			</h4>
+			<table class="table table-striped table-bordered">
+				<thead class="thead-inverse">
+				<tr>
+					<th sec:authorize="hasRole('ROLE_USER')">id</th>
+					<th th:text="#{text.pedido.estado}">nombre</th>
+					<th th:text="#{text.pedido.cantidad}">apellido</th>
+					<th th:text="#{text.pedido.cliente}">email</th>
+					<th th:text="#{text.pedido.fecha}">fecha</th>
+					<th th:text="#{text.pedidos.cantTotal}">fecha</th>
+					<th th:text="#{text.pedidos.total}">fecha</th>
+
+					<th th:text="#{text.pedido.editar}" sec:authorize="hasRole('ROLE_ADMIN')">editar</th>
+					<th th:text="#{text.pedido.eliminar}" sec:authorize="hasRole('ROLE_ADMIN')">eliminar</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr th:each="pedido: ${pedido}">
+					<td sec:authorize="hasRole('ROLE_USER')"><a class="btn btn-primary btn-xs"
+																th:href="@{/ver/} + ${cliente.id}" th:text="${cliente.id}"></a></td>
+					<td th:text="${pedido.estado}"></td>
+					<td th:text="${pedido.cantidad}"></td>
+					<td th:text="${pedido.cliente}"></td>
+					<td th:text="${pedido.fecha}"></td>
+					<td th:text="${pedido.cantTotal}"></td>
+					<td th:text="${pedido.total}"></td>
+
+					<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-primary btn-xs"
+																 th:href="@{/form/} + ${cliente.id}" th:text="#{text.pedido.editar}"></a></td>
+					<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-danger btn-xs"
+																 th:href="@{/eliminar/} + ${cliente.id}" th:text="#{text.pedido.eliminar}"
+																 onclick="return confirm(document.getElementById('i18n_eliminar_cliente').innerHTML);"></a></td>
+				</tr>
+				</tbody>
+
+			</table>
+			<nav th:replace="paginator-nav :: paginator"></nav>
+		</div>
+	</div>
+
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>><!--llama al footer del layout-->
+</body>
+</html>
